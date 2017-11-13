@@ -73,6 +73,7 @@
             return;
         }
         var dragTarget = tryFindDraggableTarget(e);
+        console.log(dragTarget);
         if (!dragTarget) {
             return;
         }
@@ -85,15 +86,15 @@
         }
     }
     function tryFindDraggableTarget(event) {
-        var el = event.target;
-        do {
-            if (el.draggable === false) {
+        for(var i = 0; i < event.path.length; i++) {
+            var el = event.path[i];
+            if(el.draggable === false) {
                 continue;
             }
             if (el.getAttribute && el.getAttribute("draggable") === "true") {
                 return el;
             }
-        } while ((el = el.parentNode) && el !== document.body);
+        }
     }
     function dragOperationEnded(_config, event, state) {
         if (state === 0) {
@@ -334,6 +335,7 @@
                 return;
             }
             var newUserSelection = document.elementFromPoint(this._currentHotspotCoordinates.x, this._currentHotspotCoordinates.y);
+            console.log('new user selection', newUserSelection);
             console.log("dnd-poly: new immediate user selection is: " + newUserSelection);
             var previousTargetElement = this._currentDropTarget;
             if (newUserSelection !== this._immediateUserSelection && newUserSelection !== this._currentDropTarget) {
